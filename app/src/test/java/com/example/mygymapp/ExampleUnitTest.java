@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
+        // Simple assertion test for local unit testing setup
         assertEquals(4, 2 + 2);
     }
 }

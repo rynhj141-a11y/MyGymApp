@@ -7,12 +7,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Activity for editing user profile details including name, goal, and weight metrics.
+ */
 public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        // Bind input fields and action buttons
         EditText etName = findViewById(R.id.et_edit_name);
         EditText etGoal = findViewById(R.id.et_edit_goal);
         EditText etCurrentWeight = findViewById(R.id.et_edit_current_weight);
@@ -20,6 +24,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Button btnSave = findViewById(R.id.btn_save_profile);
         Button btnCancel = findViewById(R.id.btn_cancel_profile);
 
+        // Pre-fill fields with existing values passed via Intent extras
         String currentName = getIntent().getStringExtra("CURRENT_NAME");
         String currentGoal = getIntent().getStringExtra("CURRENT_GOAL");
         String currentWeight = getIntent().getStringExtra("CURRENT_WEIGHT");
@@ -30,6 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (currentWeight != null) etCurrentWeight.setText(currentWeight);
         if (goalWeight != null) etGoalWeight.setText(goalWeight);
 
+        // Save button listener: collects edited fields and passes result back to ProfileActivity
         btnSave.setOnClickListener(v -> {
             String updatedName = etName.getText().toString().trim();
             String updatedGoal = etGoal.getText().toString().trim();
@@ -45,6 +51,7 @@ public class EditProfileActivity extends AppCompatActivity {
             finish();
         });
 
+        // Cancel button listener: closes screen without saving changes
         btnCancel.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
             finish();

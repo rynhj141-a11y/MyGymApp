@@ -11,6 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Activity for managing individual exercise or routine sessions.
+ * Provides a rest countdown timer, rep tracking, and logs completed workout sessions.
+ */
 public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = "DetailActivityLifecycle";
@@ -19,7 +23,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView tvTimerDisplay;
     private EditText etRepsCompleted;
     private boolean isTimerRunning = false;
-    private long timeLeftInMillis = 30000; // 30 seconds default
+    private long timeLeftInMillis = 30000; // Default 30 seconds rest timer
     private String exerciseName = "Workout Session";
 
     @Override
@@ -28,6 +32,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         Log.d(TAG, "onCreate called");
 
+        // Bind view controls
         TextView tvExerciseTitle = findViewById(R.id.tv_exercise_title);
         tvTimerDisplay = findViewById(R.id.tv_timer_display);
         etRepsCompleted = findViewById(R.id.et_reps_completed);
@@ -35,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
         Button btnResetTimer = findViewById(R.id.btn_reset_timer);
         Button btnFinish = findViewById(R.id.btn_finish);
 
+        // Retrieve exercise or routine title passed from previous screen
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String ex = extras.getString("EXERCISE_NAME");
@@ -49,6 +55,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
+        // Timer action buttons
         btnStartTimer.setOnClickListener(v -> {
             if (!isTimerRunning) {
                 startTimer();
@@ -57,6 +64,7 @@ public class DetailActivity extends AppCompatActivity {
 
         btnResetTimer.setOnClickListener(v -> resetTimer());
 
+        // Finish button: records completed workout reps and saves log to repository
         btnFinish.setOnClickListener(v -> {
             String reps = etRepsCompleted.getText().toString();
             String repsText = reps.isEmpty() ? "10" : reps;
@@ -84,11 +92,15 @@ public class DetailActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause called");
+        // Pause timer when activity loses focus
         if (isTimerRunning) {
             pauseTimer();
         }
     }
 
+    /**
+     * Starts the countdown timer for rest interval.
+     */
     private void startTimer() {
         countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
@@ -109,6 +121,9 @@ public class DetailActivity extends AppCompatActivity {
         isTimerRunning = true;
     }
 
+    /**
+     * Pauses the active countdown timer.
+     */
     private void pauseTimer() {
         if (countDownTimer != null) {
             countDownTimer.cancel();
@@ -116,6 +131,9 @@ public class DetailActivity extends AppCompatActivity {
         isTimerRunning = false;
     }
 
+    /**
+     * Resets countdown timer to default duration.
+     */
     private void resetTimer() {
         if (countDownTimer != null) {
             countDownTimer.cancel();
@@ -125,6 +143,9 @@ public class DetailActivity extends AppCompatActivity {
         isTimerRunning = false;
     }
 
+    /**
+     * Formats and updates timer display text view (MM:SS).
+     */
     private void updateCountDownText() {
         long secondsLeft = timeLeftInMillis / 1000;
         tvTimerDisplay.setText(String.format("00:%02d", secondsLeft));

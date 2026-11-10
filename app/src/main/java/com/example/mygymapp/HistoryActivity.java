@@ -13,6 +13,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
+/**
+ * Activity for displaying completed workout history log entries.
+ * Allows users to view past workouts and clear history records.
+ */
 public class HistoryActivity extends AppCompatActivity {
 
     private ArrayList<String> workoutHistoryList = new ArrayList<>();
@@ -24,12 +28,14 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+        // Bind layout views
         TextView tvTitle = findViewById(R.id.tv_history_title);
         tvTotalLogs = findViewById(R.id.tv_total_logs);
         ListView lvHistory = findViewById(R.id.lv_history);
         Button btnBackMain = findViewById(R.id.btn_back_main);
         Button btnClearHistory = findViewById(R.id.btn_clear_history);
 
+        // Extract user ID passed via intent extras if present
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String userId = extras.getString("USER_ID");
@@ -38,6 +44,7 @@ public class HistoryActivity extends AppCompatActivity {
             }
         }
 
+        // Custom list item adapter styled for dark theme UI
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, workoutHistoryList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -51,10 +58,13 @@ public class HistoryActivity extends AppCompatActivity {
         };
         lvHistory.setAdapter(adapter);
 
+        // Initial data load
         refreshData();
 
+        // Navigate back to main screen
         btnBackMain.setOnClickListener(v -> finish());
 
+        // Clear history logs from repository and refresh UI
         btnClearHistory.setOnClickListener(v -> {
             WorkoutRepository.clearWorkouts(this);
             refreshData();
@@ -65,9 +75,13 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Refresh workout history when returning to this screen
         refreshData();
     }
 
+    /**
+     * Reloads workout logs from WorkoutRepository and updates the list view and count label.
+     */
     private void refreshData() {
         workoutHistoryList.clear();
         workoutHistoryList.addAll(WorkoutRepository.getWorkouts(this));

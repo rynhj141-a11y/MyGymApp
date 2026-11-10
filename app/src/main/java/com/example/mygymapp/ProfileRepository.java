@@ -3,6 +3,9 @@ package com.example.mygymapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * Repository class handling data persistence of user profile information using SharedPreferences.
+ */
 public class ProfileRepository {
 
     private static final String PREF_NAME = "gym_profile_prefs";
@@ -11,6 +14,9 @@ public class ProfileRepository {
     private static final String KEY_CURRENT_WEIGHT = "user_current_weight";
     private static final String KEY_GOAL_WEIGHT = "user_goal_weight";
 
+    /**
+     * Saves user profile values to SharedPreferences.
+     */
     public static void saveProfile(Context context, String name, String goal, String currentWeight, String goalWeight) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit()
@@ -21,21 +27,33 @@ public class ProfileRepository {
             .apply();
     }
 
+    /**
+     * Retrieves stored user name or default name.
+     */
     public static String getName(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(KEY_NAME, "John Doe");
     }
 
+    /**
+     * Retrieves stored user fitness goal or default value.
+     */
     public static String getGoal(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(KEY_GOAL, "Intermediate Athlete");
     }
 
+    /**
+     * Retrieves stored current weight or default weight.
+     */
     public static String getCurrentWeight(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(KEY_CURRENT_WEIGHT, "78 kg");
     }
 
+    /**
+     * Retrieves stored target goal weight or default value.
+     */
     public static String getGoalWeight(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(KEY_GOAL_WEIGHT, "75 kg");

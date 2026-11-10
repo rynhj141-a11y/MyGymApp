@@ -12,18 +12,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Main dashboard Activity serving as the primary navigation hub of the application.
+ * Provides access to quick workout selection, exercise library, history logs, and profile settings.
+ */
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Bind layout controls
         Spinner spinnerRoutines = findViewById(R.id.spinner_routines);
         Button btnStartQuick = findViewById(R.id.btn_start_quick);
         Button btnBrowseRoutines = findViewById(R.id.btn_browse_routines);
         Button btnHistory = findViewById(R.id.btn_history);
         Button btnProfile = findViewById(R.id.btn_profile);
 
+        // Initialize routines dropdown adapter with dark theme styling
         String[] routines = {"Chest & Triceps", "Back & Biceps", "Leg Day", "Full Body"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, routines) {
             @Override
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         };
         spinnerRoutines.setAdapter(adapter);
 
+        // Quick Start button listener: opens DetailActivity with selected routine
         btnStartQuick.setOnClickListener(v -> {
             String selectedRoutine = spinnerRoutines.getSelectedItem().toString();
             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
@@ -52,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Browse Routines button listener: opens exercise list view
         btnBrowseRoutines.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ListActivity.class);
             Bundle bundle = new Bundle();
@@ -60,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // History button listener: opens workout history log screen
         btnHistory.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
             Bundle bundle = new Bundle();
@@ -68,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Profile button listener: opens user profile screen
         btnProfile.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             Bundle bundle = new Bundle();

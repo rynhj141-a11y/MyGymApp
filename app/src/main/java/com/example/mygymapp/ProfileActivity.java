@@ -10,6 +10,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Activity for displaying and managing user profile details and fitness goals.
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView tvUserName;
@@ -23,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        // Bind layout views
         tvUserName = findViewById(R.id.tv_user_name);
         tvUserLevel = findViewById(R.id.tv_user_level);
         tvCurrentWeight = findViewById(R.id.tv_current_weight);
@@ -32,10 +36,10 @@ public class ProfileActivity extends AppCompatActivity {
         Button btnWorkoutGoals = findViewById(R.id.btn_workout_goals);
         Button btnProfileBack = findViewById(R.id.btn_profile_back);
 
-        // Load profile data from persistent ProfileRepository
+        // Load profile data from persistent storage
         loadProfileData();
 
-        // Register ActivityResultLauncher for EditProfileActivity
+        // Register ActivityResultLauncher for receiving updated profile fields from EditProfileActivity
         editProfileLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -54,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
                     // Persist to SharedPreferences via ProfileRepository
                     ProfileRepository.saveProfile(this, finalName, finalGoal, finalCurrentWeight, finalGoalWeight);
 
-                    // Update UI immediately
+                    // Refresh UI view text
                     loadProfileData();
 
                     Toast.makeText(this, "Profile & Goals Updated!", Toast.LENGTH_SHORT).show();
@@ -71,9 +75,13 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Refresh display when activity resumes
         loadProfileData();
     }
 
+    /**
+     * Loads saved user profile values from ProfileRepository and sets text views.
+     */
     private void loadProfileData() {
         if (tvUserName != null) tvUserName.setText(ProfileRepository.getName(this));
         if (tvUserLevel != null) tvUserLevel.setText(ProfileRepository.getGoal(this));
@@ -81,6 +89,9 @@ public class ProfileActivity extends AppCompatActivity {
         if (tvGoalWeight != null) tvGoalWeight.setText(ProfileRepository.getGoalWeight(this));
     }
 
+    /**
+     * Launches EditProfileActivity passing existing profile fields.
+     */
     private void launchEditProfile() {
         Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
         intent.putExtra("CURRENT_NAME", tvUserName.getText().toString());

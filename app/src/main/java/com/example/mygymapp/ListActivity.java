@@ -17,6 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Activity for displaying exercise categories and custom exercises in a list view.
+ * Enables selection of exercises to start detail sessions and adding custom exercises.
+ */
 public class ListActivity extends AppCompatActivity {
 
     private ArrayList<String> exerciseList;
@@ -28,11 +32,13 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        // Bind layout views
         TextView tvHeader = findViewById(R.id.tv_list_header);
         ListView lvExercises = findViewById(R.id.lv_exercises);
         Button btnAddCustom = findViewById(R.id.btn_add_custom_exercise);
         Button btnBackMain = findViewById(R.id.btn_back_main);
 
+        // Display category passed via intent extra
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String category = extras.getString("CATEGORY");
@@ -41,11 +47,13 @@ public class ListActivity extends AppCompatActivity {
             }
         }
 
+        // Initial default exercise list
         exerciseList = new ArrayList<>(Arrays.asList(
             "Barbell Bench Press", "Squat", "Pull-ups", 
             "Dumbbell Shoulder Press", "Cable Bicep Curl"
         ));
 
+        // Custom array adapter with dark background item formatting
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, exerciseList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -59,7 +67,7 @@ public class ListActivity extends AppCompatActivity {
         };
         lvExercises.setAdapter(adapter);
 
-        // Register ActivityResultLauncher for AddExerciseActivity
+        // Register result launcher to handle newly added custom exercise from AddExerciseActivity
         addExerciseLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -74,15 +82,18 @@ public class ListActivity extends AppCompatActivity {
             }
         );
 
+        // Add Custom Exercise button listener: launches AddExerciseActivity
         btnAddCustom.setOnClickListener(v -> {
             Intent intent = new Intent(ListActivity.this, AddExerciseActivity.class);
             addExerciseLauncher.launch(intent);
         });
 
+        // Navigation back button listener
         if (btnBackMain != null) {
             btnBackMain.setOnClickListener(v -> finish());
         }
 
+        // Exercise item selection listener: opens DetailActivity for selected exercise
         lvExercises.setOnItemClickListener((parent, view, position, id) -> {
             String exerciseName = exerciseList.get(position);
             Intent intent = new Intent(ListActivity.this, DetailActivity.class);
