@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gym_black"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tv_list_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EXERCISE LIBRARY"
+        android:textColor="@color/gym_red"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_add_custom_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/gym_red"
+        android:text="+ ADD CUSTOM EXERCISE (FOR RESULT)"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/lv_exercises"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@color/gym_surface"
+        android:dividerHeight="1dp"
+        tools:listitem="@android:layout/simple_list_item_1" />
+
+    <Button
+        android:id="@+id/btn_back_main"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/dark_surface_variant"
+        android:text="BACK TO MAIN"
+        android:textColor="@color/white" />
+
+</LinearLayout>
